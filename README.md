@@ -2,7 +2,7 @@
 
 A simple app to track your podcasts from different platforms like spotify, google podcast, etc.
 
-![Podcast Tracker Homepage]("homepage.png")
+![Podcast Tracker Homepage](homepage.png)
 
 ## Technology Used:
 
