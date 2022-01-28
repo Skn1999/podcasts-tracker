@@ -1,0 +1,14 @@
+{
+  "extends": "../other/shared-tsconfig.json",
+  "include": ["./**/*"],
+  "ts-node": {
+    "type": "module",
+    "compilerOptions": {
+      "module": "CommonJS",
+      "target": "ES3"
+    },
+    "moduleTypes": {
+      "prisma/**/*": "esm"
+    }
+  }
+}
