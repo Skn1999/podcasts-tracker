@@ -32,9 +32,9 @@ export default function Menubar() {
         </NavItem>
       </ul>
 
-      <div className="flex items-center justify-center rounded-full border ml-8 cursor-pointer hover:bg-indigo-700 w-12 h-12 text-lg transition duration-150 border-indigo-200 relative">
+      {/* <div className="flex items-center justify-center rounded-full border ml-8 cursor-pointer hover:bg-indigo-700 w-12 h-12 text-lg transition duration-150 border-indigo-200 relative">
         🧑‍🦱
-      </div>
+      </div> */}
     </nav>
   );
 }
