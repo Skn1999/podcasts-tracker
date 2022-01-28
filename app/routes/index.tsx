@@ -18,7 +18,7 @@ export default function Index() {
             to track now.
           </p>
           <Link
-            to="/track"
+            to="/tracks"
             className="bg-white rounded-md p-4 text-lg text-indigo-900 hover:shadow-lg transition-all duration-150 transform hover:-translate-y-1"
           >
             Start Tracking Now -&gt;
