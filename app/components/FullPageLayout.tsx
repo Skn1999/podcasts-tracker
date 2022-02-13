@@ -5,7 +5,10 @@ type Props = {
   wrapperClasses?: string;
 };
 
-export default function FullPageLayout({ children, wrapperClasses }: Props) {
+export default function FullPageLayout({
+  children,
+  wrapperClasses = "bg-indigo-900 text-indigo-200",
+}: Props) {
   return (
     <section
       className={`w-full h-screen overflow-auto px-4 xl:px-0 ${wrapperClasses}`}
