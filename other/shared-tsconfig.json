@@ -15,6 +15,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "noUncheckedIndexedAccess": true,
-    "typeRoots": ["../types", "../node_modules/@types"]
+    "typeRoots": ["../types", "../node_modules/@types"],
+    "sourceMap": true
   }
 }
