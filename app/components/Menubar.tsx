@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import type { LinkProps } from "react-router-dom";
 import { Link } from "remix";
+import Logo from "./Logo";
 
 const NavItem = ({ children, className, ...props }: LinkProps) => {
   return (
@@ -14,14 +15,9 @@ export default function Menubar() {
   return (
     <nav className="relative top-5 left-auto right-auto flex items-center justify-start p-4 mx-auto rounded-md overflow-hidden shadow-2xl border-b border-indigo-500 bg-transparent">
       <div className="absolute backdrop-blur-2xl bg-white bg-opacity-5 inset-0 w-full h-full"></div>
-      <div
-        className="flex-shrink-0 text-xl relative font-mono"
-        aria-label="Podcast Tracker"
-      >
-        <Link to={"/"}>🎧 Podcast Tracker</Link>
-      </div>
+      <Logo />
 
-      <ul className="flex items-center justify-end ml-auto space-x-8 relative">
+      <ul className="flex items-center justify-end ml-auto space-x-8 relative text-sm">
         <NavItem to="/">Home</NavItem>
         <NavItem to="/about">About</NavItem>
         <NavItem
@@ -29,6 +25,12 @@ export default function Menubar() {
           target="_blank"
         >
           Github
+        </NavItem>
+        <NavItem
+          to="/login"
+          className="bg-white rounded-md p-2 px-3 font-medium text-indigo-900 hover:shadow-lg hover:text-indigo-900"
+        >
+          Login
         </NavItem>
       </ul>
 
