@@ -126,7 +126,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 };
 
-const InputField = (props: React.HTMLProps<HTMLInputElement>) => {
+export const InputField = (props: React.HTMLProps<HTMLInputElement>) => {
   return (
     <input
       className={`block border border-slate-400 bg-white bg-opacity-10 w-full rounded-md p-2 focus:bg-white focus:text-gray-900 ${props.className}`}
@@ -135,7 +135,7 @@ const InputField = (props: React.HTMLProps<HTMLInputElement>) => {
   );
 };
 
-const InputError = ({ errorMessage }: { errorMessage: string }) => {
+export const InputError = ({ errorMessage }: { errorMessage: string }) => {
   return <span className="text-red-400">{errorMessage}</span>;
 };
 
