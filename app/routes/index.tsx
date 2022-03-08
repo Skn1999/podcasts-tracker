@@ -1,11 +1,26 @@
-import { Link } from "remix";
+import { User } from "@prisma/client";
+import { Link, LoaderFunction, useLoaderData } from "remix";
 import FullPageLayout from "~/components/FullPageLayout";
 import Menubar from "~/components/Menubar";
+import { getUser } from "~/utils/user";
+
+type LoaderData = {
+  user?: User | null;
+};
+
+export let loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
+  const data: LoaderData = {
+    user,
+  };
+  return data;
+};
 
 export default function Index() {
+  const data = useLoaderData<LoaderData>();
   return (
     <FullPageLayout wrapperClasses="bg-indigo-900 text-indigo-200 leading-5">
-      <Menubar />
+      <Menubar user={data.user} />
 
       <section className="w-full py-28 flex items-center  justify-around">
         <div className="w-7/12 flex-grow-0 flex items-start flex-col space-y-6">

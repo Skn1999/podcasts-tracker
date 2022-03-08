@@ -1,19 +1,21 @@
-import { PodcastLinks } from "@prisma/client";
-import { Link, LoaderFunction, useLoaderData } from "remix";
+import { PodcastLinks, User } from "@prisma/client";
+import { Form, Link, LoaderFunction, useLoaderData } from "remix";
 import { db } from "~/utils/db.server";
 import { ExternalLinkIcon, PlusIcon } from "@heroicons/react/solid";
+import { getUserId, requireUserId } from "~/utils/session";
+import { DotsVerticalIcon, TrashIcon, PlayIcon } from "@heroicons/react/solid";
+import { PlayIcon as PlayIconOutlined } from "@heroicons/react/outline";
+import { MouseEventHandler } from "react";
 
 type LoaderData = {
   podcastLinks: Array<PodcastLinks>;
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  // currently for testing fetching my details
-  // TODO: check for user session and try to fetch details later
-  const sumit = await db.user.findFirst({ where: { role: "ADMIN" } });
+  const userId = (await getUserId(request)) as string;
 
   const podcastLinks = await db.podcastLinks.findMany({
-    where: { userId: sumit?.id },
+    where: { userId: userId },
   });
   const data: LoaderData = { podcastLinks };
 
@@ -22,6 +24,18 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function TracksIndexRoute() {
   const { podcastLinks } = useLoaderData<LoaderData>();
+
+  // first sort by created at and then listened
+  podcastLinks
+    .sort((a, b) => {
+      if (a.createdAt < b.createdAt) return -1;
+      else return 1;
+    })
+    .sort((a, b) => {
+      if (a.listened) return 1;
+      else return -1;
+    });
+
   return (
     <>
       <section className="w-full pt-12">
@@ -36,16 +50,16 @@ export default function TracksIndexRoute() {
           </Link>
         </div>
       </section>
-      <ul className=" mt-6 flex flex-col items-stretch justify-start space-y-4">
+      <ul className=" my-6 flex flex-col items-stretch justify-start space-y-4">
         {podcastLinks.map((link) => (
           <li
-            className={`rounded-md overflow-hidden bg-white bg-opacity-5 border-b border-slate-600 p-4 flex items-start space-x-8 backdrop-blur-lg ${
+            className={`rounded-md overflow-hidden bg-white bg-opacity-5 border-b border-slate-600 p-8 flex items-start space-x-8 backdrop-blur-lg ${
               link.listened ? "opacity-50" : ""
             } `}
             key={link.id}
           >
             <div
-              className={`w-20 h-20 rounded-md overflow-hidden ${
+              className={`w-20 h-20 rounded-md overflow-hidden flex-shrink-0 ${
                 link.listened ? "" : "shadow-xl"
               }`}
             >
@@ -55,7 +69,7 @@ export default function TracksIndexRoute() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div>
+            <div className="flex-grow">
               <a
                 href={link.link}
                 className="text-lg text-indigo-100 font-semibold flex items-center space-x-2"
@@ -63,9 +77,32 @@ export default function TracksIndexRoute() {
                 <span>{link.title}</span>
                 <ExternalLinkIcon className="w-4 h-4 text-current" />
               </a>
-              <p className="mt-2 text-sm font-normal leading-snug">
+              <p className="mt-2 text-sm font-normal leading-snug w-3/4">
                 {link.description}
               </p>
+            </div>
+            <div className="flex-shrink-0 -mt-4 -mr-4 flex">
+              <Form action="" method="post">
+                <input type="hidden" value="delete" name="_method" />
+                <button
+                  title="Delete podcast"
+                  className="cursor-pointer p-2 hover:bg-indigo-100 hover:bg-opacity-25 rounded-full transition-all duration-150"
+                >
+                  {/* <DotsVerticalIcon className="w-6 h-6 text-white" /> */}
+                  <TrashIcon className="w-5 h-5 text-white opacity-70" />
+                </button>
+              </Form>
+              <button
+                title={`Mark as ${link.listened ? "unplayed" : "played"}`}
+                className="cursor-pointer p-2 hover:bg-indigo-100 hover:bg-opacity-25 rounded-full transition-all duration-150"
+              >
+                {/* <DotsVerticalIcon className="w-6 h-6 text-white" /> */}
+                {link.listened ? (
+                  <PlayIcon className="w-5 h-5 text-white opacity-70" />
+                ) : (
+                  <PlayIconOutlined className="w-5 h-5 text-white opacity-70" />
+                )}
+              </button>
             </div>
           </li>
         ))}
