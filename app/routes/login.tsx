@@ -1,10 +1,18 @@
-import { ActionFunction, Form, json, redirect, useActionData } from "remix";
+import {
+  ActionFunction,
+  Form,
+  json,
+  redirect,
+  useActionData,
+  useSearchParams,
+} from "remix";
 import FullPageLayout from "~/components/FullPageLayout";
 import Logo from "~/components/Logo";
 import { emailRegex } from "~/constant/emailRegex";
 import { login } from "~/utils/user";
 import { InputError, InputField } from "./tracks/new";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
+import { createUserSession } from "~/utils/session";
 
 type ActionData = {
   fields?: {
@@ -47,8 +55,13 @@ export const action: ActionFunction = async ({ request }) => {
 
   const email = formData.get("email");
   const password = formData.get("password");
+  const redirectTo = formData.get("redirectTo") || "/tracks";
 
-  if (typeof email !== "string" || typeof password !== "string") {
+  if (
+    typeof email !== "string" ||
+    typeof password !== "string" ||
+    typeof redirectTo !== "string"
+  ) {
     return badRequest({ formError: "Form not submitted correctly" });
   }
 
@@ -78,10 +91,12 @@ export const action: ActionFunction = async ({ request }) => {
 
   //   instead of redirect create a user session and redirect in that func
 
-  return redirect("/tracks");
+  return createUserSession(user.id, redirectTo);
+  // return redirect("/tracks");
 };
 
 export default function LoginRoute() {
+  const [searchParams] = useSearchParams();
   const actionData = useActionData<ActionData>();
   return (
     <FullPageLayout>
@@ -102,6 +117,10 @@ export default function LoginRoute() {
             <span className="text-sm">{actionData.formError}</span>
           </p>
         ) : null}
+        <input
+          type="hidden"
+          value={searchParams.get("redirectTo") ?? undefined}
+        />
         <div>
           <label className="text-sm">
             Email:{" "}
