@@ -30,3 +30,31 @@ export async function createNewManualPodcast({
 
   return newPodcast;
 }
+
+export async function deletePodcast({ podcastId }: { podcastId: string }) {
+  const deletedPodcast = await db.podcastLinks.delete({
+    where: { id: podcastId },
+  });
+
+  return deletedPodcast;
+}
+
+export async function togglePodcastAsPlayed({
+  podcastId,
+  playStatus,
+}: {
+  podcastId: string;
+  playStatus: boolean;
+}) {
+  if (!podcastId || !playStatus) {
+    return null;
+  }
+  const updatedPodcast = await db.podcastLinks.update({
+    where: { id: podcastId },
+    data: {
+      listened: playStatus,
+    },
+  });
+
+  return updatedPodcast;
+}
