@@ -31,11 +31,8 @@ export const action: ActionFunction = async ({ request }) => {
   const podcastId = await formData.get("podcastId");
   const playStatusToSet = await formData.get("playStatus");
 
-  if (
-    typeof method !== "string" ||
-    typeof podcastId !== "string" ||
-    typeof playStatusToSet !== "string"
-  ) {
+  if (typeof method !== "string" || typeof podcastId !== "string") {
+    console.log("type check not passed");
     return null;
   }
 
@@ -50,6 +47,9 @@ export const action: ActionFunction = async ({ request }) => {
         playStatus: playStatusToSet === "false",
       });
     }
+
+    default:
+      return "Not implemented";
   }
 };
 

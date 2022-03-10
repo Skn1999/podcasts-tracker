@@ -14,7 +14,7 @@ export default function PodcastTile({ link }: Props) {
     <li
       className={`rounded-md overflow-hidden bg-white bg-opacity-5 border-b border-slate-600 p-8 flex items-start space-x-8 backdrop-blur-lg ${
         link.listened ? "opacity-50" : ""
-      } `}
+      } transform-gpu hover:-translate-y-1 hover:bg-opacity-20 duration-150`}
       key={link.id}
     >
       <div
@@ -52,7 +52,7 @@ export default function PodcastTile({ link }: Props) {
             <TrashIcon className="w-5 h-5 text-white opacity-70" />
           </button>
         </fetcher.Form>
-        <fetcher.Form>
+        <fetcher.Form action="" method="post">
           <input type="hidden" name="_method" value="markPlayed" />
           <input type="hidden" value={link.id} name="podcastId" />
           <input

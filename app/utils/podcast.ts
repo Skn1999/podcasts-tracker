@@ -46,7 +46,7 @@ export async function togglePodcastAsPlayed({
   podcastId: string;
   playStatus: boolean;
 }) {
-  if (!podcastId || !playStatus) {
+  if (!podcastId || playStatus === null || playStatus === undefined) {
     return null;
   }
   const updatedPodcast = await db.podcastLinks.update({
