@@ -4,7 +4,6 @@ import { Link, useLoaderData } from "remix";
 import Logo from "./Logo";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { useCallback, useRef, useState } from "react";
-import Modal from "./Modal";
 
 type Props = {
   user?: User | null;
